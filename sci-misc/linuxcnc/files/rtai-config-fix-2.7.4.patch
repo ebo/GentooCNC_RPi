@@ -1,0 +1,46 @@
+--- configure.in.orig	2016-03-02 05:45:43.729990639 +0000
++++ configure.in	2016-03-02 05:47:23.073323379 +0000
+@@ -289,12 +289,12 @@
+     RTPREFIX=rtai
+     RTAI_VERSION=$($RTS --version)
+     RTAI=$(echo $RTAI_VERSION | cut -f 1 -d .)
+-    RTDIR=`$RTS --prefix`
++    RTDIR=`$RTS --prefix -o`
+     RTDIR=$(cd $RTDIR ; pwd -P )
+-    RTFLAGS=`$RTS --module-cflags`
++    RTFLAGS=`$RTS --module-cflags -o`
+     RTFLAGS="$RTFLAGS -DRTAI=$RTAI"
+-    KERNELDIR=`$RTS --linux-dir`
+-    RTARCH=`$RTS --arch`
++    KERNELDIR=`$RTS --linux-dir -o`
++    RTARCH=`$RTS --arch -o`
+     ULAPI_CFLAGS=`$RTS --lxrt-cflags`
+     ULAPI_LDFLAGS=`$RTS --lxrt-ldflags`
+ ;;
+@@ -364,7 +364,7 @@
+ AC_MSG_CHECKING([for cc version])
+ 
+ if (test ${RTS##*/} = rtai-config ) ; then
+-  RTSCC=`$RTS --cc`
++  RTSCC=`$RTS --cc -o`
+   AC_MSG_RESULT(found $RTSCC in rtai-config)
+ else
+   AC_MSG_RESULT(not specified)
+@@ -525,7 +525,7 @@
+ 
+ # Do a quick test for module extension..
+ AC_MSG_CHECKING([for kernel module extension])
+-MODEXT=`$RTS --module-ext 2>/dev/null` || MODEXT=".o"
++MODEXT=`$RTS --module-ext -o 2>/dev/null` || MODEXT=".o"
+ if test "x" = "x$MODEXT"; then
+     MODEXT=".o"
+ fi
+@@ -596,7 +596,7 @@
+ # if not specified, ask the realtime config script where the directory is
+ # if the config script returns an error, set MODULE_DIR to nothing
+ if test "x" = "x$MODULE_DIR" ; then
+-  MODULE_DIR=`$RTS --module-dir 2>/dev/null`
++  MODULE_DIR=`$RTS --module-dir -o 2>/dev/null`
+   if ! test -d $MODULE_DIR ; then
+     AC_MSG_ERROR([$RTS --module-dir did not specify an existing directory.  You must use specify it using --with-module-dir=...])
+   fi

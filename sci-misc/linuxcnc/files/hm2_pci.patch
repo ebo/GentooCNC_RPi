@@ -1,0 +1,10 @@
+--- hal/drivers/mesa-hostmot2/hm2_pci.c.orig	2014-11-25 10:08:14.204528089 +0000
++++ hal/drivers/mesa-hostmot2/hm2_pci.c	2014-11-25 10:08:31.804527649 +0000
+@@ -31,6 +31,7 @@
+ #include "hostmot2-lowlevel.h"
+ #include "hm2_pci.h"
+ 
++#define rtai_rtapi "rtai_rtapi"
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Sebastian Kuzminsky");

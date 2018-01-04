@@ -1,0 +1,11 @@
+--- hal/user_comps/Submakefile.old	2016-05-02 09:11:18.083901931 +0200
++++ hal/user_comps/Submakefile	2016-05-02 09:11:24.850568557 +0200
+@@ -20,7 +20,7 @@
+ TARGETS += $(USER_COMP_BIN)
+ 
+ ../bin/%: hal/user_comps/%.comp ../bin/comp
+-	comp --install $<
++	../bin/comp --install $<
+ 
+ ifdef HAVE_LIBMODBUS3
+ MODBUSSRCS := hal/user_comps/gs2_vfd.c

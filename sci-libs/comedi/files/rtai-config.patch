@@ -1,0 +1,20 @@
+--- m4/rtai.m4.orig	2014-11-27 08:26:44.413713428 +0000
++++ m4/rtai.m4	2014-11-27 08:27:00.110379705 +0000
+@@ -18,7 +18,7 @@
+ 		if [[ -d ${RTAI_DIR}/base -a \
+ 			-f ${RTAI_DIR}/GNUmakefile -a \
+ 			-f ${RTAI_DIR}/base/scripts/rtai-config ]]; then
+-			RTAI_CONFIG="${SHELL} ${RTAI_DIR}/base/scripts/rtai-config"
++			RTAI_CONFIG="${SHELL} ${RTAI_DIR}/base/scripts/rtai-config -o"
+ 			RTAI_CFLAGS="-I${RTAI_DIR} -I${RTAI_DIR}/base/include"
+ 			RTAI_VPATH=`sed -n -e 's/^VPATH *= *\(.*\)/\1/p' ${RTAI_DIR}/GNUmakefile`
+ 			if [[ -n "${RTAI_VPATH}" -a "${RTAI_VPATH}" != "." ]]; then
+@@ -26,7 +26,7 @@
+ 			fi
+ 		else
+ 			if [[ -x "${RTAI_DIR}/bin/rtai-config" ]]; then
+-				RTAI_CONFIG="${RTAI_DIR}/bin/rtai-config"
++				RTAI_CONFIG="${RTAI_DIR}/bin/rtai-config -o"
+ 			fi
+ 			if [[ -d ${RTAI_DIR}/include/rtai ]] ; then # for Debian
+ 				RTAI_CFLAGS="-I${RTAI_DIR}/include/rtai"

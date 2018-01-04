@@ -1,0 +1,23 @@
+--- emc/usr_intf/emcsh.cc.orig	2014-07-22 11:50:08.935971199 +0200
++++ emc/usr_intf/emcsh.cc	2014-07-22 11:50:21.645970883 +0200
+@@ -14,6 +14,8 @@
+ * Last change:
+ ********************************************************************/
+ 
++#define USE_INTERP_RESULT 1
++
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+--- emc/usr_intf/axis/extensions/_toglmodule.c.orig	2014-07-22 11:51:57.869301822 +0200
++++ emc/usr_intf/axis/extensions/_toglmodule.c	2014-07-22 11:52:25.575967799 +0200
+@@ -13,6 +13,9 @@
+ //    You should have received a copy of the GNU General Public License
+ //    along with this program; if not, write to the Free Software
+ //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++
++#define USE_INTERP_RESULT 1
++
+ #include <Python.h>
+ #include <emc/usr_intf/axis/extensions/togl.c>
+ static int first_time = 1;

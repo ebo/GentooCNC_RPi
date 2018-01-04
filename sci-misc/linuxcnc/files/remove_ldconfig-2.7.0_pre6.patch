@@ -1,0 +1,10 @@
+--- Makefile.orig	2014-11-20 09:23:03.934679625 +0000
++++ Makefile	2014-11-20 09:23:33.824678880 +0000
+@@ -595,7 +595,6 @@
+ 	$(EXE) ../scripts/linuxcncmkdesktop $(DESTDIR)$(bindir)
+ 	$(FILE) $(filter ../lib/%.a ../lib/%.so.0,$(TARGETS)) $(DESTDIR)$(libdir)
+ 	cp --no-dereference $(filter ../lib/%.so, $(TARGETS)) $(DESTDIR)$(libdir)
+-	-ldconfig $(DESTDIR)$(libdir)
+ 	$(FILE) $(filter %.h %.hh,$(TARGETS)) $(DESTDIR)$(includedir)/linuxcnc/
+ 	$(FILE) $(addprefix ../docs/,$(DOCS)) $(DESTDIR)$(docsdir)
+ 	$(FILE) $(DOCS_HELP) $(DESTDIR)$(docsdir)

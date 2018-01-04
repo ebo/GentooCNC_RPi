@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer>
+    <email>slis@gentoo.org</email>
+  </maintainer>
+  <use>
+    <flag name="rtai">Build with support for RTAI</flag>
+	<flag name="pci">Build PCI device drivers</flag>
+	<flag name="pcmcia">Build PCMCIA device drivers</flag>
+	<flag name="usb">Build USB device drivers</flag>
+  </use>
+</pkgmetadata>

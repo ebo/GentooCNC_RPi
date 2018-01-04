@@ -1,0 +1,11 @@
+--- Makefile.org	2015-05-16 01:26:58.844929688 -0400
++++ Makefile	2015-05-16 01:27:28.715067683 -0400
+@@ -198,7 +198,7 @@
+ ifeq ($(RUN_IN_PLACE),yes)
+ LDFLAGS := -L$(LIB_DIR) -Wl,-rpath,$(LIB_DIR)
+ else
+-LDFLAGS := -L../lib -L/usr/realtime/lib -L/usr/lib -llxrt -lpthread
++LDFLAGS := -L../lib -L/usr/realtime/lib -L/usr/lib -lpthread
+ endif
+ 
+ # Rules to make .o (object) files

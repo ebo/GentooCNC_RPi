@@ -1,0 +1,10 @@
+--- Makefile.orig	2014-07-14 11:21:45.136544990 +0200
++++ Makefile	2014-07-14 11:21:49.633211544 +0200
+@@ -781,7 +781,6 @@
+ 	$(FILE) $(filter ../lib/%.a ../lib/%.so.0,$(TARGETS)) $(DESTDIR)$(libdir)
+ 	cp --no-dereference $(filter ../lib/%.so, $(TARGETS)) $(DESTDIR)$(libdir)
+ 	$(FILE) ../rtlib/ulapi-*.so $(DESTDIR)$(EMC2_RTLIB_BASE_DIR)
+-	-ldconfig $(DESTDIR)$(libdir)
+ 	$(FILE) $(filter %.h %.hh,$(TARGETS)) $(DESTDIR)$(includedir)/linuxcnc/
+ 	$(FILE) $(addprefix ../docs/,$(DOCS)) $(DESTDIR)$(docdir)
+ 	$(FILE) $(DOCS_HELP) $(DESTDIR)$(docdir)
