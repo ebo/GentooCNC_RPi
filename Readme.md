@@ -9,7 +9,7 @@ I wanted to be able to tweak some of the versions available, and use it via laym
 
 To install the overlays using layman
 ```
-layman -o https://raw.github.com//CNC-Nidehog/GentooCNC/master/repositories.xml -f -a GentooCNC
+layman -o https://raw.github.com/CNC-Nidehog/GentooCNC/master/repositories.xml -f -a GentooCNC
 emerge --sync
 ```
 
