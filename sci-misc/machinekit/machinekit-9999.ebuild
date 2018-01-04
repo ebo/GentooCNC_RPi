@@ -32,14 +32,14 @@ DEPEND="${PYTHON_DEPS}
 	dev-lang/tk
 	dev-libs/boost[python]
 	dev-libs/jansson
-	modbus? ( dev-libs/libmodbus )
+	modbus? ( <dev-libs/libmodbus-3.1.0 )
 	dev-libs/npth
 	dev-libs/uriparser
 	dev-python/cython
 	dev-python/pyftpdlib
 	dev-tcltk/bwidget
 	net-dns/avahi
-	net-libs/czmq
+	>=net-libs/czmq-4.0.0
 	net-libs/libwebsockets
 	xenomai? ( sys-libs/xenomai )
 	rtai? ( sys-libs/rtai )
@@ -48,6 +48,7 @@ DEPEND="${PYTHON_DEPS}
 	x11-libs/libXinerama
 	usb? ( virtual/libusb )
 	python? ( dev-lang/python:2.7[tk] )
+	dev-python/protobuf-python
 	dev-libs/protobuf
 	x11-libs/libXmu
 	virtual/opengl
