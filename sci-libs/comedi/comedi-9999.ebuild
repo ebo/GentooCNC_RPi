@@ -11,7 +11,6 @@ HOMEPAGE="http://www.comedi.org/"
 SRC_URI=""
 
 EGIT_REPO_URI="https://github.com/Linux-Comedi/comedi.git"
-EGIT_COMMIT="v0_7_76"
 
 LICENSE="LGPL-2.1"
 SLOT="0"

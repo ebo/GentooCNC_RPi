@@ -12,6 +12,7 @@ DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
 SRC_URI=""
 EGIT_REPO_URI="https://github.com/machinekit/machinekit.git"
+EGIT_COMMIT="dc216d5953ca4319bec4ee8a8a77a7cc061ca431"
 
 LICENSE="LGPL-3"
 SLOT="0"

@@ -12,7 +12,7 @@ HOMEPAGE="http://www.comedi.org/"
 SRC_URI="http://www.comedi.org/download/${P}.tar.gz"
 
 EGIT_REPO_URI="https://github.com/Linux-Comedi/comedilib.git"
-EGIT_COMMIT="r0_10_2"
+EGIT_COMMIT="r0_11_0"
 
 LICENSE="LGPL-2.1"
 SLOT="0"

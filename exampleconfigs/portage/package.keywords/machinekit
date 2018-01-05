@@ -1,5 +1,7 @@
-=sci-misc/machinekit-9999 ~amd64
-=net-libs/czmq-4.0.2 ~amd64
-=dev-python/yapps-2.2.0-r1 ~amd64
-=dev-libs/libmodbus-3.0.6 ~amd64
+#=sci-misc/machinekit-9999
+=sci-misc/machinekit-20180105
+
+=net-libs/czmq-4.0.2
+=dev-python/yapps-2.2.0-r1
+=dev-libs/libmodbus-3.0.6
 
