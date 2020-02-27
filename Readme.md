@@ -2,14 +2,19 @@
 
 ## Overview
 
-This is a fork of the GentooCNC overlay at https://sourceforge.net/projects/gentoocnc/
-I wanted to be able to tweak some of the versions available, and use it via layman which currently isn't possible with the original repo.
+This is a fork of CNC-Nidehog's GentooCNC overlay
+(https://github.com/CNC-Nidehog/GentooCNC) which itself was a fork of
+an earlier SourceForge effort
+(https://sourceforge.net/projects/gentoocnc/).  This fork is intended
+to bring the original GentooCNC up to date, with a current emphasis on
+supporting the Raspberry Pi ecosystem.
 
 ## Setup via layman
 
 To install the overlays using layman
 ```
-layman -o https://raw.github.com/CNC-Nidehog/GentooCNC/master/repositories.xml -f -a GentooCNC
+layman -o https://raw.github.com/ebo/GentooCNC_RPi/master/repositories.xml -f -a GentooCNC_RPi
+
 emerge --sync
 ```
 
@@ -19,13 +24,13 @@ emerge --sync
   * [Gentoo Wiki](http://wiki.gentoo.org/wiki/Layman#Adding_custom_overlays)
   * [Local overlays](https://wiki.gentoo.org/wiki/Overlay/Local_overlay) should be managed via `/etc/portage/repos.conf/`.
   * To enable this overlay make sure you are using a recent Portage version (at least `2.2.14`)
-  * Create a `/etc/portage/repos.conf/GentooCNC.conf` file containing:
+  * Create a `/etc/portage/repos.conf/GentooCNC_RPi.conf` file containing:
 
 ```
-[GentooCNC]
-location = /usr/local/portage/GentooCNC
+[GentooCNC_RPi]
+location = /usr/local/portage/GentooCNC_RPi
 sync-type = git
-sync-uri = https://github.com/CNC-Nidehog/GentooCNC.git
+sync-uri = https://github.com/ebo/GentooCNC_RPi.git
 priority=9999
 ```
 
@@ -36,7 +41,7 @@ Afterwards, simply run `emerge --sync`, and Portage should then pull in all the 
 
 There are two use flags to be aware of:
 
-  * rtapi - builds LinuxCNC with hard-realtime suppport
+  * rtapi - builds LinuxCNC with hard-realtime support
   * simulator - build using POSIX threads, no realtime at all
 
 If you're trying to get machinekit to emerge, then I'd recommend turning on the tk use flag globally

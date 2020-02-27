@@ -461,7 +461,7 @@ create_makefile() {
         fi
     fi
     
-    echo '# created with Gaston (GentooCNC)' > Makefile
+    echo '# created with Gaston (GentooCNC_RPi)' > Makefile
     echo 'OPTS=""' >> Makefile
     for i in ${ARGS} ; do
         if [[ "${i::1}" == "-" ]] ; then

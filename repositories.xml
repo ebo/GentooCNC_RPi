@@ -2,15 +2,14 @@
 <!DOCTYPE repositories SYSTEM "/dtd/repositories.dtd">
 <repositories xmlns="" version="1.0">
   <repo quality="experimental" status="unofficial">
-    <name><![CDATA[GentooCNC]]></name>
-    <description lang="en"><![CDATA[Gentoo CNC Overlay]]></description>
-    <homepage>https://github.com/CNC-Nidehog/GentooCNC</homepage>
+    <name><![CDATA[GentooCNC_RPi]]></name>
+    <description lang="en"><![CDATA[Gentoo CNC Overlay targeting the RPi]]></description>
+    <homepage>https://github.com/ebo/GentooCNC_RPi</homepage>
     <owner type="person">
-      <email>garlicbready@googlemail.com</email>
-      <name><![CDATA[Garlicbready]]></name>
+      <email>ebo@users.sourceforge.net</email>
+      <name><![CDATA[John (EBo) David]]></name>
     </owner>
-    <source type="git">https://github.com/CNC-Nidehog/GentooCNC.git</source>
-    <feed>http://github.com/CNC-Nidehog/GentooCNC/commits/master.atom</feed>
+    <source type="git">https://github.com/ebo/GentooCNC_RPi.git</source>
+    <feed>http://github.com/ebo/GentooCNC_RPi/commits/master.atom</feed>
   </repo>
 </repositories>
-

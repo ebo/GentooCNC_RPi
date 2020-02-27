@@ -4,7 +4,7 @@
 <!--
 
 Syntax highlighting for KDE - KATE
-for LinuxCNC HAL files
+for LinuxCNC_RPi HAL files
 
 INSTALLATION:
 place this file under: ~/.kde4/share/apps/katepart/syntax/ or /usr/share/apps/katepart/syntax/ or /usr/share/katepart5/syntax/
