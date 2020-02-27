@@ -1,5 +1,6 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+# FIXME: make sure that this is based on most modern portage examples.
 # $Id$
 
 EAPI="5"
@@ -16,7 +17,7 @@ EGIT_REPO_URI="https://github.com/machinekit/machinekit.git"
 LICENSE="LGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="gtk modbus python rt rtai +simulator usb X xenomai"
+IUSE="gtk modbus python rt rtai +simulator usb X xenomai doc"
 # TODO: add shmdrv use flag
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	xenomai? ( !simulator !rt !rtai )
@@ -25,7 +26,7 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	"
 
 # TODO: dependencies for 'rt' use flag
-
+	#rt? ( sys-kernel/rt-sources )
 DEPEND="${PYTHON_DEPS}
 	dev-lang/tcl
 	dev-lang/tk
@@ -42,7 +43,6 @@ DEPEND="${PYTHON_DEPS}
 	net-libs/libwebsockets
 	xenomai? ( sys-libs/xenomai )
 	rtai? ( sys-libs/rtai )
-	rt? ( sys-kernel/rt-sources )
 	gtk? ( x11-libs/gtk+ )
 	x11-libs/libXinerama
 	usb? ( virtual/libusb )
@@ -54,9 +54,10 @@ DEPEND="${PYTHON_DEPS}
 	virtual/glu
 	${PYTHON_DEPS}
 	"
+        #python? ( dev-python/yapps )
 RDEPEND="${DEPEND}
-	python? ( dev-python/yapps )
 	!sci-misc/linuxcnc
+        dev-libs/libcgroup
 	X? ( dev-tcltk/tkimg )
 	gtk? ( python? ( dev-python/pygtk ) )"
 # 	X? ( python? ( dev-python/libgnome-python ) )
@@ -65,11 +66,7 @@ S="${S}/src"
 
 src_prepare() {
  	AT_M4DIR=m4 eautoreconf
-# 	epatch "${FILESDIR}/libwebsockets.patch"
-	epatch "${FILESDIR}/remove_ldconfig.patch"
-# 	epatch "${FILESDIR}/halcomp.patch"
-# 	epatch "${FILESDIR}/tcl8.6.patch"
-# 	epatch "${FILESDIR}/fix_modinc_include.patch"
+	epatch "${FILESDIR}/LDLIBS_tirpc.patch"
 }
 
 src_configure() {
@@ -87,6 +84,15 @@ src_configure() {
 	use !python && myconf="${myconf} --disable-python"
 	
 	myconf="${myconf} "$(use_with modbus "libmodbus")
+
+	use doc && myconf="${myconf} --enable-build-documentation"
+
+	tc-export PKG_CONFIG
+	export CFLAGS="$(${PKG_CONFIG} --cflags libtirpc)"
+	export CXXFLAGS="$(${PKG_CONFIG} --cflags libtirpc)"
+	export LDLIBS="$(${PKG_CONFIG} --libs libtirpc)"
+
+	export FAKED_MODE=1
 
 	econf ${myconf}
 }
@@ -111,5 +117,8 @@ src_install() {
 	doenvd "${envd}"
 	
 	insinto "${EPREFIX}/usr/share/machinekit/"
+
+	# FIXME: will documentation be automatically installed? sudo apt-get install machinekit-manual-pages
+
 	doins Makefile.inc
 }
