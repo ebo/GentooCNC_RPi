@@ -12,7 +12,7 @@ inherit autotools eutils git-r3 multilib python-single-r1
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
 SRC_URI=""
-EGIT_REPO_URI="https://github.com/machinekit/machinekit.git"
+EGIT_REPO_URI="https://github.com/ebo/machinekit.git"
 
 LICENSE="LGPL-3"
 SLOT="0"
@@ -66,7 +66,6 @@ S="${S}/src"
 
 src_prepare() {
  	AT_M4DIR=m4 eautoreconf
-	epatch "${FILESDIR}/LDLIBS_tirpc.patch"
 }
 
 src_configure() {
