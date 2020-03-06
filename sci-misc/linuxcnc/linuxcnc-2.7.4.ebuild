@@ -1,6 +1,5 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
 EAPI="5"
 
@@ -37,9 +36,9 @@ DEPEND="dev-lang/tcl
 	python? ( virtual/opengl virtual/glu )
 	${PYTHON_DEPS}
 	"
+#	python? ( dev-python/yapps )
 RDEPEND="${DEPEND}
 	X? ( python? ( dev-python/libgnome-python ) )
-	python? ( dev-python/yapps )
 	!sci-misc/machinekit"
 
 S="${WORKDIR}/${P}/src"
@@ -84,7 +83,7 @@ src_install() {
 
 	insinto "/usr/share/linuxcnc/"
 	doins Makefile.inc
-	
+
 	insinto "/etc/linuxcnc/"
 	doins "../scripts/rtapi.conf"
 
