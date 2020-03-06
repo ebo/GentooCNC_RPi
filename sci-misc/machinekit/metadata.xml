@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+        <maintainer type="person">
+                <email>bureau@jonglieren-jena.de</email>
+                <name>Markus Oehme</name>
+        </maintainer>
+<maintainer type="project">
+                <email>proxy-maint@gentoo.org</email>
+                <name>Proxy Maintainers</name>
+        </maintainer>
+</pkgmetadata>
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer>
+      <email>ebo@users.sourceforge.net</email>
+  </maintainer>
+  <use>
+    <flag name="rt">Build with RT_PREEMPT threads modules</flag>
+        <flag name="simulator">Build with posix threads (no realtime)</flag>
+        <flag name="modbus">Build modbus libraries</flag>
+        <flag name="xenomai">Build with xenomai userland threads</flag>
+        <flag name="rtai">Build with realtime threads support</flag>
+        <flag name="doc">Build documentation</flag>
+  </use>  
+</pkgmetadata>-->
