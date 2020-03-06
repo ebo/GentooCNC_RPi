@@ -32,7 +32,7 @@ DEPEND="${PYTHON_DEPS}
 	dev-lang/tk
 	dev-libs/boost[python]
 	dev-libs/jansson
-	modbus? ( <dev-libs/libmodbus-3.1.0 )
+	modbus? ( dev-libs/libmodbus-3.1.0 )
 	dev-libs/npth
 	dev-libs/uriparser
 	dev-python/cython
