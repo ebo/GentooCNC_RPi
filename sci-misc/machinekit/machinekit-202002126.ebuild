@@ -1,18 +1,17 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-# FIXME: check out https://trofi.github.io/posts/201-masking-a-package-in-gentoo-overlay.html
-
-EAPI=6
+EAPI="5"
 
 PYTHON_COMPAT=( python{2_6,2_7} )
 
-inherit autotools eutils git-r3 multilib python-single-r1 flag-o-matic
+inherit autotools eutils git-r3 multilib python-single-r1
 
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
 SRC_URI=""
 EGIT_REPO_URI="https://github.com/ebo/machinekit.git"
+EGIT_COMMIT="9239acbee0f84edd94615b5e33e40e724c913ff9"
 
 LICENSE="LGPL-3"
 SLOT="0"
@@ -27,14 +26,13 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	"
 
 # TODO: dependencies for 'rt' use flag
-	#modbus? ( <dev-libs/libmodbus-3.1.0 )
 	#rt? ( sys-kernel/rt-sources )
 DEPEND="${PYTHON_DEPS}
 	dev-lang/tcl
 	dev-lang/tk
 	dev-libs/boost[python]
 	dev-libs/jansson
-	modbus? ( dev-libs/libmodbus )
+	modbus? ( <dev-libs/libmodbus-3.1.0 )
 	dev-libs/npth
 	dev-libs/uriparser
 	dev-python/cython
@@ -68,6 +66,7 @@ S="${S}/src"
 
 src_prepare() {
 	AT_M4DIR=m4 eautoreconf
+	epatch "${FILESDIR}/LDLIBS_tirpc.patch"
 }
 
 src_configure() {
