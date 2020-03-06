@@ -12,8 +12,7 @@ inherit autotools eutils git-r3 multilib python-single-r1 flag-o-matic
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
 SRC_URI=""
-EGIT_REPO_URI="https://github.com/machinekit/machinekit.git"
-#EGIT_REPO_URI="https://github.com/ebo/machinekit.git"
+EGIT_REPO_URI="https://github.com/ebo/machinekit.git"
 
 LICENSE="LGPL-3"
 SLOT="0"
