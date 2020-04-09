@@ -1,11 +1,11 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="5"
+EAPI=6
 
 PYTHON_COMPAT=( python{2_6,2_7} )
 
-inherit autotools eutils git-r3 multilib python-single-r1
+inherit autotools eutils git-r3 multilib python-single-r1 flag-o-matic
 
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
@@ -27,12 +27,14 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 
 # TODO: dependencies for 'rt' use flag
 	#rt? ( sys-kernel/rt-sources )
+	#modbus? ( >=dev-libs/libmodbus-3.1.0 )
 DEPEND="${PYTHON_DEPS}
+	>=sys-devel/automake-1.16.1-r2
 	dev-lang/tcl
 	dev-lang/tk
 	dev-libs/boost[python]
 	dev-libs/jansson
-	modbus? ( dev-libs/libmodbus-3.1.0 )
+	modbus? ( dev-libs/libmodbus )
 	dev-libs/npth
 	dev-libs/uriparser
 	dev-python/cython
@@ -65,8 +67,11 @@ RDEPEND="${DEPEND}
 S="${S}/src"
 
 src_prepare() {
+	default
+	eapply -p0 "${FILESDIR}/LDLIBS_tirpc.patch"
+	eapply_user
+
 	AT_M4DIR=m4 eautoreconf
-	epatch "${FILESDIR}/LDLIBS_tirpc.patch"
 }
 
 src_configure() {
@@ -98,6 +103,8 @@ src_configure() {
 }
 
 src_install() {
+	"${PYTHON}" -OO -m compileall -q -f -d "${sitedir}" "${D}${sitedir}"
+
 	emake DESTDIR="${D}" install
 
 	local envd="${T}/51machinekit"

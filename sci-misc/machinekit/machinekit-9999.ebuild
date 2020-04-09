@@ -30,6 +30,7 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	#modbus? ( <dev-libs/libmodbus-3.1.0 )
 	#rt? ( sys-kernel/rt-sources )
 DEPEND="${PYTHON_DEPS}
+	>=sys-devel/automake-1.16.1-r2
 	dev-lang/tcl
 	dev-lang/tk
 	dev-libs/boost[python]
@@ -67,6 +68,9 @@ RDEPEND="${DEPEND}
 S="${S}/src"
 
 src_prepare() {
+	default
+	eapply_user
+
 	AT_M4DIR=m4 eautoreconf
 }
 
@@ -99,6 +103,11 @@ src_configure() {
 }
 
 src_install() {
+	cd "${S}/src"
+
+	"${PYTHON}" -m compileall -q -f -d .
+	#"${PYTHON}" -m compileall -q -f -d "${sitedir}" "${D}${sitedir}"
+
 	emake DESTDIR="${D}" install
 
 	local envd="${T}/51machinekit"
