@@ -2,12 +2,12 @@
 <!DOCTYPE repositories SYSTEM "/dtd/repositories.dtd">
 <repositories xmlns="" version="1.0">
   <repo priority="50" quality="experimental" status="unofficial">
-    <name>![CDATA[GentooCNC_RPi]]</name>
-    <description lang="en">![CDATA[Gentoo CNC Overlay targeting the RPi]]</description>
+    <name>GentooCNC_RPi</name>
+    <description lang="en">Gentoo CNC Overlay targeting the RPi</description>
     <homepage>https://github.com/ebo/GentooCNC_RPi</homepage>
     <owner type="person">
       <email>ebo@users.sourceforge.net</email>
-      <name><![CDATA[John (EBo) David]]></name>
+      <name>John (EBo) David</name>
     </owner>
     <source type="git">https://github.com/ebo/GentooCNC_RPi.git</source>
     <feed>http://github.com/ebo/GentooCNC_RPi/commits/master.atom</feed>
