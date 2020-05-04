@@ -1,6 +1,6 @@
-diff -ruN a/src/emc/iotask/Submakefile b/src/emc/iotask/Submakefile
---- a/src/emc/iotask/Submakefile	2020-02-26 04:36:32.995394787 -0500
-+++ b/src/emc/iotask/Submakefile	2020-02-26 04:44:14.768165424 -0500
+diff -ruN src/emc/iotask/Submakefile src/emc/iotask/Submakefile
+--- src/emc/iotask/Submakefile	2020-02-26 04:36:32.995394787 -0500
++++ src/emc/iotask/Submakefile	2020-02-26 04:44:14.768165424 -0500
 @@ -4,11 +4,11 @@
  
  ../bin/io: $(call TOOBJS, $(IOSRCS)) ../lib/liblinuxcnc.a ../lib/libnml.so.0 ../lib/liblinuxcnchal.so.0 ../lib/liblinuxcncini.so.0
@@ -15,18 +15,18 @@ diff -ruN a/src/emc/iotask/Submakefile b/src/emc/iotask/Submakefile
  
  TARGETS += ../bin/io ../bin/iov2
  
-diff -ruN a/src/emc/sai/Submakefile b/src/emc/sai/Submakefile
---- a/src/emc/sai/Submakefile	2020-02-26 04:36:33.005394414 -0500
-+++ b/src/emc/sai/Submakefile	2020-02-26 04:44:31.217551216 -0500
+diff -ruN src/emc/sai/Submakefile src/emc/sai/Submakefile
+--- src/emc/sai/Submakefile	2020-02-26 04:36:33.005394414 -0500
++++ src/emc/sai/Submakefile	2020-02-26 04:44:31.217551216 -0500
 @@ -25,4 +25,4 @@
  	../lib/librtapi_math.so.0
  	$(ECHO) Linking $(notdir $@)
  	$(Q)$(CXX) $(LDFLAGS) $(PROFILE_LDFLAGS) \
 -	-o $@ $^ $(ULFLAGS) -l$(BOOST_PYTHON_LIB) $(PYTHON_LIBS) $(LIBREADLINE)
 +	-o $@ $^ $(ULFLAGS) -l$(BOOST_PYTHON_LIB) $(PYTHON_LIBS) $(LIBREADLINE) -ltirpc
-diff -ruN a/src/emc/task/Submakefile b/src/emc/task/Submakefile
---- a/src/emc/task/Submakefile	2020-02-26 04:36:33.005394414 -0500
-+++ b/src/emc/task/Submakefile	2020-02-26 04:43:51.409037590 -0500
+diff -ruN src/emc/task/Submakefile src/emc/task/Submakefile
+--- src/emc/task/Submakefile	2020-02-26 04:36:33.005394414 -0500
++++ src/emc/task/Submakefile	2020-02-26 04:43:51.409037590 -0500
 @@ -9,7 +9,7 @@
  	../lib/liblinuxcncini.so.0 \
  	../lib/librtapi_math.so.0
@@ -43,9 +43,9 @@ diff -ruN a/src/emc/task/Submakefile b/src/emc/task/Submakefile
 -	$(Q)$(CXX) -o $@ $^ $(LDFLAGS) -l$(BOOST_PYTHON_LIB) $(PYTHON_LIBS)
 +	$(Q)$(CXX) -o $@ $^ $(LDFLAGS) -l$(BOOST_PYTHON_LIB) $(PYTHON_LIBS) -ltirpc
  TARGETS += ../bin/milltask
-diff -ruN a/src/emc/usr_intf/Submakefile b/src/emc/usr_intf/Submakefile
---- a/src/emc/usr_intf/Submakefile	2020-02-26 04:36:33.015394041 -0500
-+++ b/src/emc/usr_intf/Submakefile	2020-02-26 04:43:20.860178098 -0500
+diff -ruN src/emc/usr_intf/Submakefile src/emc/usr_intf/Submakefile
+--- src/emc/usr_intf/Submakefile	2020-02-26 04:36:33.015394041 -0500
++++ src/emc/usr_intf/Submakefile	2020-02-26 04:43:20.860178098 -0500
 @@ -60,7 +60,7 @@
  	../lib/liblinuxcncini.so.0 \
  	../lib/librtapi_math.so.0

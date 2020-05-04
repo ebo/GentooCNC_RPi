@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python{2_6,2_7} )
+PYTHON_COMPAT=( python2_7 )
 
 inherit autotools eutils git-r3 multilib python-single-r1 flag-o-matic
 
@@ -67,6 +67,7 @@ RDEPEND="${DEPEND}
 PATCHES=(
 	"${FILESDIR}"/LDLIBS_tirpc.patch
 )
+#	"${FILESDIR}"/udev_rules.patch
 
 S="${S}/src"
 
@@ -75,6 +76,7 @@ src_prepare() {
 	eapply_user
 
 	AT_M4DIR=m4 eautoreconf
+	eautomake
 }
 
 src_configure() {
@@ -110,6 +112,8 @@ src_install() {
 
 	emake DESTDIR="${D}" install
 
+	python_optimize
+
 	local envd="${T}/51machinekit"
 	local threads=""
 	if use rt ; then
@@ -124,11 +128,14 @@ src_install() {
 	cat > "${envd}" <<-EOF
 		LDPATH="${EPREFIX}/usr/$(get_libdir)/linuxcnc:${EPREFIX}/usr/$(get_libdir)/linuxcnc/${threads}"
 	EOF
-	doenvd "${envd}"
 
-	insinto "/usr/share/machinekit/"
+	#mkdir -p
+	#insinto "/lib/udev/rules.d/"
+	#doins "${envd}"
+	newins ${envd} /lib/udev/rules.d/${envd}
 
+	#insinto "/usr/share/machinekit/"
 	# FIXME: will documentation be automatically installed? sudo apt-get install machinekit-manual-pages
-
-	doins Makefile.inc
+	#doins Makefile.inc
+	newins Makefile.inc /usr/share/machinekit/Makefile.inc
 }

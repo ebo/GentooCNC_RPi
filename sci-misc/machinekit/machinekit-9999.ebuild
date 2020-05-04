@@ -3,7 +3,7 @@
 
 # FIXME: check out https://trofi.github.io/posts/201-masking-a-package-in-gentoo-overlay.html
 
-EAPI=6
+EAPI=7
 
 PYTHON_COMPAT=( python{2_6,2_7} )
 
@@ -65,6 +65,10 @@ RDEPEND="${DEPEND}
 	gtk? ( python? ( dev-python/pygtk ) )"
 # 	X? ( python? ( dev-python/libgnome-python ) )
 
+PATCHES=(
+	"${FILESDIR}"/udev_rules.patch
+)
+
 S="${S}/src"
 
 src_prepare() {
@@ -72,6 +76,7 @@ src_prepare() {
 	eapply_user
 
 	AT_M4DIR=m4 eautoreconf
+	eautomake
 }
 
 src_configure() {
@@ -110,6 +115,8 @@ src_install() {
 
 	emake DESTDIR="${D}" install
 
+	python_optimize
+
 	local envd="${T}/51machinekit"
 	local threads=""
 	if use rt ; then
@@ -124,7 +131,8 @@ src_install() {
 	cat > "${envd}" <<-EOF
 		LDPATH="${EPREFIX}/usr/$(get_libdir)/linuxcnc:${EPREFIX}/usr/$(get_libdir)/linuxcnc/${threads}"
 	EOF
-	doenvd "${envd}"
+	insinto "/lib/udev/rules.d/"
+	doins "${envd}"
 
 	insinto "/usr/share/machinekit/"
 
