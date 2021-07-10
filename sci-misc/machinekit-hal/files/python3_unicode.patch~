@@ -1,0 +1,20 @@
+--- ./machinetalk/nanopb/generator/nanopb_generator.py~	2021-07-10 10:07:26.000000000 -0400
++++ ./machinetalk/nanopb/generator/nanopb_generator.py	2021-07-10 10:07:33.000000000 -0400
+@@ -83,7 +83,7 @@
+         return '_'.join(self.parts)
+ 
+     def __add__(self, other):
+-        if isinstance(other, (str, unicode)):
++        if isinstance(other, (str)):
+             return Names(self.parts + (other,))
+         elif isinstance(other, tuple):
+             return Names(self.parts + other)
+@@ -1084,7 +1084,7 @@
+         checks_msgnames.append(msg.name)
+         for field in msg.fields:
+             status = field.largest_field_value()
+-            if isinstance(status, (str, unicode)):
++            if isinstance(status, (str)):
+                 checks.append(status)
+             elif status > worst:
+                 worst = status

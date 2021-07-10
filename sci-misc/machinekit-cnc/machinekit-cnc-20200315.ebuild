@@ -3,15 +3,15 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python{2_6,2_7} )
 
 inherit autotools eutils git-r3 multilib python-single-r1 flag-o-matic
 
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
 SRC_URI=""
-EGIT_REPO_URI="https://github.com/ebo/machinekit.git"
-EGIT_COMMIT="9239acbee0f84edd94615b5e33e40e724c913ff9"
+EGIT_REPO_URI="https://github.com/machinekit/machinekit-cnc.git"
+EGIT_COMMIT="93065fc020b0a89949fefabfbae64f0df40915bc"
 
 LICENSE="LGPL-3"
 SLOT="0"
@@ -64,9 +64,9 @@ RDEPEND="${DEPEND}
 	gtk? ( python? ( dev-python/pygtk ) )"
 # 	X? ( python? ( dev-python/libgnome-python ) )
 
-PATCHES=(
-	"${FILESDIR}"/LDLIBS_tirpc.patch
-)
+#PATCHES=(
+#	"${FILESDIR}"/LDLIBS_tirpc.patch
+#)
 #	"${FILESDIR}"/udev_rules.patch
 
 S="${S}/src"
@@ -132,7 +132,7 @@ src_install() {
 	#mkdir -p
 	#insinto "/lib/udev/rules.d/"
 	#doins "${envd}"
-	newins "${envd}" "/lib/udev/rules.d/${envd}"
+	newins ${envd} /lib/udev/rules.d/${envd}
 
 	#insinto "/usr/share/machinekit/"
 	# FIXME: will documentation be automatically installed? sudo apt-get install machinekit-manual-pages

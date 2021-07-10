@@ -3,17 +3,21 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python{3_6,3_7,3_8} )
 
-inherit autotools eutils git-r3 multilib python-single-r1 flag-o-matic
+inherit autotools eutils multilib python-single-r1 flag-o-matic
+#git-r3
 
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
 SRC_URI=""
-EGIT_REPO_URI="https://github.com/ebo/machinekit.git"
-EGIT_COMMIT="9239acbee0f84edd94615b5e33e40e724c913ff9"
+#EGIT_REPO_URI="https://github.com/ebo/machinekit-hal.git"
+#EGIT_COMMIT="9fca994e08e3f8384498e78ea8e8baa1c899e4db"
+#EGIT_BRANCH="python3"
+SRC_URI="machinekit-hal-20200430.tgz"
+RESTRICT="fetch"
 
-LICENSE="LGPL-3"
+LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
 IUSE="gtk python usb X doc modbus rt rtai simulator xenomai"
@@ -30,6 +34,7 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	#modbus? ( >=dev-libs/libmodbus-3.1.0 )
 DEPEND="${PYTHON_DEPS}
 	>=sys-devel/automake-1.16.1-r2
+	dev-libs/concurrencykit
 	dev-lang/tcl
 	dev-lang/tk
 	dev-libs/boost[python]
@@ -64,9 +69,9 @@ RDEPEND="${DEPEND}
 	gtk? ( python? ( dev-python/pygtk ) )"
 # 	X? ( python? ( dev-python/libgnome-python ) )
 
-PATCHES=(
-	"${FILESDIR}"/LDLIBS_tirpc.patch
-)
+#PATCHES=(
+#	"${FILESDIR}"/config.patch
+#)
 #	"${FILESDIR}"/udev_rules.patch
 
 S="${S}/src"
@@ -132,7 +137,7 @@ src_install() {
 	#mkdir -p
 	#insinto "/lib/udev/rules.d/"
 	#doins "${envd}"
-	newins "${envd}" "/lib/udev/rules.d/${envd}"
+	newins ${envd} /lib/udev/rules.d/${envd}
 
 	#insinto "/usr/share/machinekit/"
 	# FIXME: will documentation be automatically installed? sudo apt-get install machinekit-manual-pages

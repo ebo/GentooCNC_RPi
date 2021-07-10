@@ -3,36 +3,46 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python3_{6,7} )
 
-inherit autotools eutils git-r3 multilib python-single-r1 flag-o-matic
+#inherit autotools eutils git-r3 multilib flag-o-matic python-r1 toolchain-funcs
+inherit autotools git-r3 toolchain-funcs python-single-r1
 
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
 SRC_URI=""
-EGIT_REPO_URI="https://github.com/ebo/machinekit.git"
-EGIT_COMMIT="9239acbee0f84edd94615b5e33e40e724c913ff9"
+EGIT_REPO_URI="https://github.com/zultron/machinekit.git"
+EGIT_BRANCH="zultron/2019-07-03-2.8-mk-hal-build"
 
 LICENSE="LGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="gtk python usb X doc modbus rt rtai simulator xenomai"
+IUSE="gtk usb X doc modbus +rt +rtai +simulator +xenomai"
 
 # TODO: add shmdrv use flag
-REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
-	xenomai? ( !simulator !rt !rtai )
-	rt? ( !simulator !xenomai !rtai )
-	rtai? ( !simulator !xenomai !rt )
-	"
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
+RDEPEND="
+	${PYTHON_DEPS}
+	>=dev-libs/boost-1.70:=[python]
+	!sci-misc/linuxcnc
+	dev-libs/libcgroup
+	X? ( dev-tcltk/tkimg )
+	gtk? ( dev-python/pygtk )"
+# 	X? ( dev-python/libgnome-python )
+#	xenomai? ( !simulator !rt !rtai )
+#	rt? ( !simulator !xenomai !rtai )
+#	rtai? ( !simulator !xenomai !rt )
 
 # TODO: dependencies for 'rt' use flag
 	#rt? ( sys-kernel/rt-sources )
 	#modbus? ( >=dev-libs/libmodbus-3.1.0 )
-DEPEND="${PYTHON_DEPS}
+#	dev-libs/boost[python]
+DEPEND="
+	${RDEPEND}
 	>=sys-devel/automake-1.16.1-r2
 	dev-lang/tcl
 	dev-lang/tk
-	dev-libs/boost[python]
 	dev-libs/jansson
 	modbus? ( dev-libs/libmodbus )
 	dev-libs/npth
@@ -48,39 +58,44 @@ DEPEND="${PYTHON_DEPS}
 	gtk? ( x11-libs/gtk+:3 )
 	x11-libs/libXinerama
 	usb? ( virtual/libusb:1 )
-	python? ( dev-lang/python:2.7[tk] )
+	dev-lang/python[tk]
 	dev-python/protobuf-python
 	dev-libs/protobuf
 	x11-libs/libXmu
 	virtual/opengl
 	virtual/glu
-	${PYTHON_DEPS}
 	"
 	#python? ( dev-python/yapps )
-RDEPEND="${DEPEND}
-	!sci-misc/linuxcnc
-	dev-libs/libcgroup
-	X? ( dev-tcltk/tkimg )
-	gtk? ( python? ( dev-python/pygtk ) )"
-# 	X? ( python? ( dev-python/libgnome-python ) )
+BDEPEND="virtual/pkgconfig"
 
-PATCHES=(
-	"${FILESDIR}"/LDLIBS_tirpc.patch
-)
+#PATCHES=(
+#	"${FILESDIR}"/LDLIBS_tirpc.patch
+#)
 #	"${FILESDIR}"/udev_rules.patch
 
 S="${S}/src"
 
 src_prepare() {
+	# FIXME: a hack patch for tirpc
+	sed -i "s%AC_CHECK_HEADER(\[rpc\/rpc.h\]%PKG_CHECK_MODULES(\[TIRPC\],\[libtirpc\],\n       [CPPFLAGS=\"\$CPPFLAGS \$TIRPC_CFLAGS -DHAVE_RPC_RPC_H\"; LIBS=\"\$LIBS \$TIRPC_LIBS\";\],\n       [AC_MSG_ERROR(\[libtirpc requested but library not found\])]\n)\nAC_CHECK_HEADER(\[rpc\/rpc.h\]%" configure.ac || die
+
 	default
 	eapply_user
 
 	AT_M4DIR=m4 eautoreconf
+
 	eautomake
 }
 
 src_configure() {
 	myconf="--enable-drivers --enable-usermode-pci --with-platform-pc"
+
+	myconf="${myconf} --with-realtime=uspace --with-hal=machinekit-hal"
+
+
+	# the modern versions of readline are not compatible with GPL-2, so
+	# work around it by not distributing the binaries.
+	myconf="${myconf} --enable-non-distributable=yes"
 
 	use !gtk && myconf="${myconf} --disable-gtk"
 	use rt && myconf="${myconf} --with-rt-preempt"
@@ -89,9 +104,6 @@ src_configure() {
 	use rtai && myconf="${myconf} --with-rtai-config=/usr/realtime/bin/rtai-config --with-rtai-kernel --enable-shmdrv"
 	use xenomai && myconf="${myconf} --with-xenomai"
 	use X && myconf="${myconf} --with-x"
-
-	use python && myconf="${myconf} --with-python=${PYTHON} --with-boost-python=boost_python-${EPYTHON:6}"
-	use !python && myconf="${myconf} --disable-python"
 
 	myconf="${myconf} "$(use_with modbus "libmodbus")
 
@@ -104,11 +116,13 @@ src_configure() {
 
 	export FAKED_MODE=1
 
-	econf ${myconf}
+	einfo "****************** boost_"${EPYTHON/./}
+	econf --with-boost-python="boost_${EPYTHON/./}" ${myconf}
 }
 
 src_install() {
 	"${PYTHON}" -OO -m compileall -q -f -d "${sitedir}" "${D}${sitedir}"
+	einfo "====================================="
 
 	emake DESTDIR="${D}" install
 
@@ -132,7 +146,7 @@ src_install() {
 	#mkdir -p
 	#insinto "/lib/udev/rules.d/"
 	#doins "${envd}"
-	newins "${envd}" "/lib/udev/rules.d/${envd}"
+	newins ${envd} /lib/udev/rules.d/${envd}
 
 	#insinto "/usr/share/machinekit/"
 	# FIXME: will documentation be automatically installed? sudo apt-get install machinekit-manual-pages

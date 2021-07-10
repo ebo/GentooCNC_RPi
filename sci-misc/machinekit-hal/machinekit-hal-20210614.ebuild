@@ -1,35 +1,74 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python3_9 )
+#PYTHON_COMPAT=( python2_{7} )
 
-inherit autotools eutils git-r3 multilib python-single-r1 flag-o-matic
+#inherit autotools eutils multilib python-single-r1 flag-o-matic git-r3
+inherit autotools git-r3 toolchain-funcs python-single-r1
 
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
 SRC_URI=""
-EGIT_REPO_URI="https://github.com/ebo/machinekit.git"
-EGIT_COMMIT="9239acbee0f84edd94615b5e33e40e724c913ff9"
+#EGIT_REPO_URI="https://github.com/zultron/machinekit-hal.git"
+#EGIT_COMMIT="9fca994e08e3f8384498e78ea8e8baa1c899e4db"
+#SRC_URI="machinekit-hal-20200430.tgz"
+#RESTRICT="fetch"
+#EGIT_REPO_URI="https://github.com/ebo/machinekit-hal.git"
+if false ; then
+	EGIT_REPO_URI="https://github.com/machinekit/machinekit-hal.git"
+	PATCHES=(
+		"${FILESDIR}"/config.patch
+	)
+elif false ; then
+	EGIT_REPO_URI="https://github.com/ebo/machinekit-hal.git"
+	EGIT_BRANCH="2020-05-09-mk-hal-lcnc-ci"
+	PATCHES=(
+		"${FILESDIR}"/config.patch
+	)
+elif true ; then
+	#EGIT_REPO_URI="https://github.com/ebo/machinekit-hal.git"
+	EGIT_REPO_URI="https://github.com/machinekit/machinekit-hal.git"
+	#EGIT_BRANCH="2020-04-24-python3"
+#	PATCHES=(
+#		"${FILESDIR}"/python3_buffer.patch
+#		"${FILESDIR}"/python3_unicode.patch
+#		"${FILESDIR}"/python3_rU.patch
+#		"${FILESDIR}"/python3_has_key.patch
+#	)
+fi
 
-LICENSE="LGPL-3"
+LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
 IUSE="gtk python usb X doc modbus rt rtai simulator xenomai"
 
 # TODO: add shmdrv use flag
-REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
-	xenomai? ( !simulator !rt !rtai )
-	rt? ( !simulator !xenomai !rtai )
-	rtai? ( !simulator !xenomai !rt )
-	"
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
+#REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
+#	xenomai? ( !simulator !rt !rtai )
+#	rt? ( !simulator !xenomai !rtai )
+#	rtai? ( !simulator !xenomai !rt )
+#	"
+
+RDEPEND="
+	${PYTHON_DEPS}
+	!sci-misc/linuxcnc
+	dev-libs/libcgroup
+	X? ( dev-tcltk/tkimg )
+	gtk? ( python? ( dev-python/pygtk ) )"
+# 	X? ( python? ( dev-python/libgnome-python ) )
 
 # TODO: dependencies for 'rt' use flag
 	#rt? ( sys-kernel/rt-sources )
 	#modbus? ( >=dev-libs/libmodbus-3.1.0 )
-DEPEND="${PYTHON_DEPS}
+DEPEND="
+	${RDEPEND}
 	>=sys-devel/automake-1.16.1-r2
+	dev-libs/concurrencykit
 	dev-lang/tcl
 	dev-lang/tk
 	dev-libs/boost[python]
@@ -54,43 +93,46 @@ DEPEND="${PYTHON_DEPS}
 	x11-libs/libXmu
 	virtual/opengl
 	virtual/glu
-	${PYTHON_DEPS}
+	dev-python/google-auth-oauthlib
+	dev-libs/jansson
+	dev-libs/uriparser
+	net-libs/libwebsockets
+	dev-libs/libcgroup
+	dev-python/pyftpdlib
+	dev-libs/libmodbus
 	"
 	#python? ( dev-python/yapps )
-RDEPEND="${DEPEND}
-	!sci-misc/linuxcnc
-	dev-libs/libcgroup
-	X? ( dev-tcltk/tkimg )
-	gtk? ( python? ( dev-python/pygtk ) )"
-# 	X? ( python? ( dev-python/libgnome-python ) )
 
-PATCHES=(
-	"${FILESDIR}"/LDLIBS_tirpc.patch
-)
 #	"${FILESDIR}"/udev_rules.patch
 
 S="${S}/src"
+#S="${S}"
 
 src_prepare() {
 	default
 	eapply_user
+
+	#sed -i "s%AX_PYTHON_DEVEL(>= 2.6)%AX_PYTHON_DEVEL(>= '2.6')%" configure.ac || die
+
+	#sed -i "s%Exception, e%Exception as e%" ./machinetalk/nanopb/generator/nanopb_generator.py || die
 
 	AT_M4DIR=m4 eautoreconf
 	eautomake
 }
 
 src_configure() {
-	myconf="--enable-drivers --enable-usermode-pci --with-platform-pc"
+	# --enable-usermode-pci --with-platform-pc
+	myconf="--enable-drivers"
 
 	use !gtk && myconf="${myconf} --disable-gtk"
-	use rt && myconf="${myconf} --with-rt-preempt"
+	#use rt && myconf="${myconf} --with-rt-preempt"
 	use simulator && myconf="${myconf} --with-posix" # --with-threads=posix
 	use !usb && myconf="${myconf} --without-libusb-1.0"
 	use rtai && myconf="${myconf} --with-rtai-config=/usr/realtime/bin/rtai-config --with-rtai-kernel --enable-shmdrv"
 	use xenomai && myconf="${myconf} --with-xenomai"
 	use X && myconf="${myconf} --with-x"
 
-	use python && myconf="${myconf} --with-python=${PYTHON} --with-boost-python=boost_python-${EPYTHON:6}"
+	use python && myconf="${myconf} --with-python=${PYTHON}"
 	use !python && myconf="${myconf} --disable-python"
 
 	myconf="${myconf} "$(use_with modbus "libmodbus")
@@ -132,7 +174,7 @@ src_install() {
 	#mkdir -p
 	#insinto "/lib/udev/rules.d/"
 	#doins "${envd}"
-	newins "${envd}" "/lib/udev/rules.d/${envd}"
+	newins ${envd} /lib/udev/rules.d/${envd}
 
 	#insinto "/usr/share/machinekit/"
 	# FIXME: will documentation be automatically installed? sudo apt-get install machinekit-manual-pages

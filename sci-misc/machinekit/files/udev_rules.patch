@@ -1,0 +1,12 @@
+--- src/Makefile.orig	2020-05-03 14:07:11.894810624 -0400
++++ src/Makefile	2020-05-03 14:07:41.723707917 -0400
+@@ -979,7 +979,8 @@
+ 	$(FILE) rtapi/shmdrv/limits.d-machinekit.conf \
+ 		$(DESTDIR)$(sysconfdir)/security/limits.d/machinekit.conf
+ 	$(FILE) rtapi/shmdrv/shmdrv.rules \
+-		$(DESTDIR)$(sysconfdir)/udev/rules.d/50-shmdrv.rules
++		mkdir -p $(DESTDIR)/lib/udev/rules.d/
++		$(DESTDIR)/lib/udev/rules.d/50-shmdrv.rules
+ ifeq ($(BUILD_EMCWEB),yes)
+ 	$(FILE) ../www/css/images/* $(DESTDIR)$(datadir)/linuxcnc/doc-root/css/images
+ 	$(FILE) ../www/css/*css $(DESTDIR)$(datadir)/linuxcnc/doc-root/css
