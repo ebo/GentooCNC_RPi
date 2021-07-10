@@ -1,0 +1,31 @@
+--- a/yapps/runtime.py
++++ b/yapps/runtime.py
+@@ -178,7 +178,7 @@ class Scanner(object):
+         file,line,p = pos
+         if file != self.filename:
+             if self.stack: return self.stack.print_line_with_pointer(pos,length=length,out=out)
+-            print >>out, "(%s: not in input buffer)" % file
++            print("(%s: not in input buffer)" % file, file=out)
+             return
+ 
+         text = self.input
+@@ -201,7 +201,7 @@ class Scanner(object):
+                     break
+                 spos = cr+1
+         else:
+-            print >>out, "(%s:%d not in input buffer)" % (file,origline)
++            print("(%s:%d not in input buffer)" % (file,origline), file=out)
+             return
+ 
+         # Now try printing part of the line
+@@ -230,8 +230,8 @@ class Scanner(object):
+             p = p - 7
+ 
+         # Now print the string, along with an indicator
+-        print >>out, '> ',text
+-        print >>out, '> ',' '*p + '^'
++        print('> ',text, file=out)
++        print('> ',' '*p + '^', file=out)
+ 
+     def grab_input(self):
+         """Get more input if possible."""
