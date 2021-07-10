@@ -87,7 +87,6 @@ DEPEND="
 	gtk? ( x11-libs/gtk+:3 )
 	x11-libs/libXinerama
 	usb? ( virtual/libusb:1 )
-	python? ( dev-lang/python:2.7[tk] )
 	dev-python/protobuf-python
 	dev-libs/protobuf
 	x11-libs/libXmu
@@ -100,8 +99,10 @@ DEPEND="
 	dev-libs/libcgroup
 	dev-python/pyftpdlib
 	dev-libs/libmodbus
+	python? ( dev-python/yapps )
 	"
-	#python? ( dev-python/yapps )
+	#
+	#python? ( dev-lang/python:2.7[tk] )
 
 #	"${FILESDIR}"/udev_rules.patch
 
