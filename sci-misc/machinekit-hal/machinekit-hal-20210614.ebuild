@@ -12,33 +12,10 @@ inherit autotools git-r3 toolchain-funcs python-single-r1 multilib
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
 SRC_URI=""
-#EGIT_REPO_URI="https://github.com/zultron/machinekit-hal.git"
-#EGIT_COMMIT="9fca994e08e3f8384498e78ea8e8baa1c899e4db"
-#SRC_URI="machinekit-hal-20200430.tgz"
-#RESTRICT="fetch"
+
 #EGIT_REPO_URI="https://github.com/ebo/machinekit-hal.git"
-if false ; then
-	EGIT_REPO_URI="https://github.com/machinekit/machinekit-hal.git"
-	PATCHES=(
-		"${FILESDIR}"/config.patch
-	)
-elif false ; then
-	EGIT_REPO_URI="https://github.com/ebo/machinekit-hal.git"
-	EGIT_BRANCH="2020-05-09-mk-hal-lcnc-ci"
-	PATCHES=(
-		"${FILESDIR}"/config.patch
-	)
-elif true ; then
-	#EGIT_REPO_URI="https://github.com/ebo/machinekit-hal.git"
-	EGIT_REPO_URI="https://github.com/machinekit/machinekit-hal.git"
-	#EGIT_BRANCH="2020-04-24-python3"
-#	PATCHES=(
-#		"${FILESDIR}"/python3_buffer.patch
-#		"${FILESDIR}"/python3_unicode.patch
-#		"${FILESDIR}"/python3_rU.patch
-#		"${FILESDIR}"/python3_has_key.patch
-#	)
-fi
+EGIT_REPO_URI="https://github.com/machinekit/machinekit-hal.git"
+EGIT_COMMIT="1ea48a8529c11b8201c221de1c29c9208accfb64"
 
 LICENSE="LGPL-2"
 SLOT="0"
@@ -101,10 +78,7 @@ DEPEND="
 	dev-libs/libmodbus
 	python? ( dev-python/yapps )
 	"
-	#
-	#python? ( dev-lang/python:2.7[tk] )
-
-#	"${FILESDIR}"/udev_rules.patch
+#	python? ( dev-lang/python:2.7[tk] )
 
 S="${S}/src"
 #S="${S}"

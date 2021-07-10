@@ -1,9 +1,9 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6,7,8} )
+PYTHON_COMPAT=( python3_{6,7,8,9} )
 #PYTHON_COMPAT=( python2_{7} )
 
 #inherit autotools eutils multilib python-single-r1 flag-o-matic git-r3
@@ -36,7 +36,7 @@ fi
 LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="gtk python usb X doc modbus rt rtai simulator xenomai"
+IUSE="gtk python usb X doc +modbus rt rtai simulator xenomai"
 
 # TODO: add shmdrv use flag
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
@@ -51,8 +51,8 @@ RDEPEND="
 	${PYTHON_DEPS}
 	!sci-misc/linuxcnc
 	dev-libs/libcgroup
-	X? ( dev-tcltk/tkimg )
-	gtk? ( python? ( dev-python/pygtk ) )"
+	X? ( dev-tcltk/tkimg )"
+#	gtk? ( python? ( dev-python/pygtk ) )
 # 	X? ( python? ( dev-python/libgnome-python ) )
 
 # TODO: dependencies for 'rt' use flag
@@ -80,16 +80,21 @@ DEPEND="
 	gtk? ( x11-libs/gtk+:3 )
 	x11-libs/libXinerama
 	usb? ( virtual/libusb:1 )
-	python? ( dev-lang/python:2.7[tk] )
 	dev-python/protobuf-python
 	dev-libs/protobuf
 	x11-libs/libXmu
 	virtual/opengl
 	virtual/glu
+	dev-python/google-auth-oauthlib
+	dev-libs/jansson
+	dev-libs/uriparser
+	net-libs/libwebsockets
+	dev-libs/libcgroup
+	dev-python/pyftpdlib
+	dev-libs/libmodbus
+	python? ( dev-python/yapps )
 	"
-	#python? ( dev-python/yapps )
-
-#	"${FILESDIR}"/udev_rules.patch
+#	python? ( dev-lang/python:2.7[tk] )
 
 S="${S}/src"
 
@@ -141,7 +146,7 @@ src_install() {
 
 	python_optimize
 
-	local envd="${T}/51machinekit"
+	local envd="51machinekit"
 	local threads=""
 	if use rt ; then
 		threads="rt";
@@ -152,17 +157,19 @@ src_install() {
 	elif use rtai ; then
 		threads="rtai";
 	fi
-	cat > "${envd}" <<-EOF
+	cat > "${T}/${envd}" <<-EOF
 		LDPATH="${EPREFIX}/usr/$(get_libdir)/linuxcnc:${EPREFIX}/usr/$(get_libdir)/linuxcnc/${threads}"
 	EOF
 
 	#mkdir -p
-	#insinto "/lib/udev/rules.d/"
-	#doins "${envd}"
-	newins ${envd} /lib/udev/rules.d/${envd}
+	insinto "/lib/udev/rules.d/"
+	doins "${T}/${envd}"
+	#newins ${T}/${envd} /lib/udev/rules.d/${envd}
 
-	#insinto "/usr/share/machinekit/"
-	# FIXME: will documentation be automatically installed? sudo apt-get install machinekit-manual-pages
-	#doins Makefile.inc
-	newins Makefile.inc /usr/share/machinekit/Makefile.inc
+	insinto "/usr/share/machinekit/"
+	doins Makefile.inc
+	#newins Makefile.inc /usr/share/machinekit/Makefile.inc
+
+	# FIXME: will documentation be automatically installed? sudo apt-get
+	#        install machinekit-manual-pages
 }
