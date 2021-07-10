@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python3_9 )
 #PYTHON_COMPAT=( python2_{7} )
 
 #inherit autotools eutils multilib python-single-r1 flag-o-matic git-r3
-inherit autotools git-r3 toolchain-funcs python-single-r1
+inherit autotools git-r3 toolchain-funcs python-single-r1 multilib
 
 DESCRIPTION="MachineKit "
 HOMEPAGE="http://www.machinekit.io/"
@@ -153,11 +153,16 @@ src_configure() {
 src_install() {
 	"${PYTHON}" -OO -m compileall -q -f -d "${sitedir}" "${D}${sitedir}"
 
+	# FIXME: this is NOT the proper way to create a multilib install
+	#        directory, but I cannot get it to work so I am hacking
+	#        this.
+	mkdir -p "${D}"/usr/lib64
+
 	emake DESTDIR="${D}" install
 
 	python_optimize
 
-	local envd="${T}/51machinekit"
+	local envd="51machinekit"
 	local threads=""
 	if use rt ; then
 		threads="rt";
@@ -168,17 +173,19 @@ src_install() {
 	elif use rtai ; then
 		threads="rtai";
 	fi
-	cat > "${envd}" <<-EOF
+	cat > "${T}/${envd}" <<-EOF
 		LDPATH="${EPREFIX}/usr/$(get_libdir)/linuxcnc:${EPREFIX}/usr/$(get_libdir)/linuxcnc/${threads}"
 	EOF
 
 	#mkdir -p
-	#insinto "/lib/udev/rules.d/"
-	#doins "${envd}"
-	newins ${envd} /lib/udev/rules.d/${envd}
+	insinto "/lib/udev/rules.d/"
+	doins "${T}/${envd}"
+	#newins ${T}/${envd} /lib/udev/rules.d/${envd}
 
-	#insinto "/usr/share/machinekit/"
-	# FIXME: will documentation be automatically installed? sudo apt-get install machinekit-manual-pages
-	#doins Makefile.inc
-	newins Makefile.inc /usr/share/machinekit/Makefile.inc
+	insinto "/usr/share/machinekit/"
+	doins Makefile.inc
+	#newins Makefile.inc /usr/share/machinekit/Makefile.inc
+
+	# FIXME: will documentation be automatically installed? sudo apt-get
+	#        install machinekit-manual-pages
 }
