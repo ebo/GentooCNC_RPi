@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+    <email>ebo@users.sourceforge.net</email>
+    <name>John (EBo) David</name>
+  </maintainer>
+  <longdescription lang="en">
+    Machinekit-HAL is a powerful software for real-time control of
+    machinery based on Hardware Abstraction Layer principle. With
+    tools and libraries making development of new components and
+    drivers easy. Integrators can choose to control industrial robotic
+    arm, single purpose machine or CNC mill or lathe with additional
+    software package.
+
+    Supporting RT PREEMPT and Xenomai 2 real-time Linux kernel
+    patches. APT packages available for Debian, Ubuntu, and Gentoo.
+  </longdescription>
+  <use>
+    <flag name="rt">Build with RT_PREEMPT threads modules</flag>
+    <flag name="simulator">Build with posix threads (no realtime)</flag>
+    <flag name="modbus">Build modbus libraries</flag>
+    <flag name="xenomai">Build with xenomai userland threads</flag>
+    <flag name="rtai">Build with realtime threads support</flag>
+    <flag name="doc">Build documentation</flag>
+  </use>  
+  <upstream>
+    <remote-id type="github">machinekit/machinekit-hal</remote-id>
+  </upstream>
+</pkgmetadata>
