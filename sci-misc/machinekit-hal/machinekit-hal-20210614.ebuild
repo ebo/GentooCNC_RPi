@@ -58,8 +58,8 @@ RDEPEND="
 	${PYTHON_DEPS}
 	!sci-misc/linuxcnc
 	dev-libs/libcgroup
-	X? ( dev-tcltk/tkimg )
-	gtk? ( python? ( dev-python/pygtk ) )"
+	X? ( dev-tcltk/tkimg )"
+#	gtk? ( python? ( dev-python/pygtk ) )
 # 	X? ( python? ( dev-python/libgnome-python ) )
 
 # TODO: dependencies for 'rt' use flag
